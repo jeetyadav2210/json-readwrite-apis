@@ -40,69 +40,6 @@ app.post('/user/add', (req, res) => {
     saveUserData(existUsers);
     res.send({ success: true, msg: 'User data added successfully' })
 });
-
-
-
-/* Read - GET method */
-app.get('/user/list', (req, res) => {
-    const users = getUserData()
-    res.send(users)
-})
-
-
-/* Update - Put method */
-app.put('/user/update/:username', (req, res) => {
-    //get the username from url
-    const username = req.params.username
-        //get the update data
-    const userData = req.body
-        //get the existing user data
-    const existUsers = getUserData()
-        //check if the username exist or not       
-    const findExist = existUsers.find(user => user.username === username)
-    if (!findExist) {
-        return res.status(409).send({ error: true, msg: 'username not exist' })
-    }
-    //filter the userdata
-    const updateUser = existUsers.filter(user => user.username !== username)
-    console.log(updateUser, "updateUser");
-    //push the updated data
-    updateUser.push(userData)
-        //finally save it
-    saveUserData(updateUser)
-    res.send({ success: true, msg: 'User data updated successfully' })
-})
-
-
-app.delete('/user/delete/:username', (req, res) => {
-    const username = req.params.username
-        //get the existing userdata
-    const existUsers = getUserData()
-        //filter the userdata to remove it
-    const filterUser = existUsers.filter(user => user.username !== username)
-    if (existUsers.length === filterUser.length) {
-        return res.status(409).send({ error: true, msg: 'username does not exist' })
-    }
-    //save the filtered data
-    saveUserData(filterUser)
-    res.send({ success: true, msg: 'User removed successfully' })
-})
-
-
-
-
-
-
-
-
-
-
-let aa = [1, 2, 3, 4, 5, 6, 7, 8, 9, 12]
-const updateUser = aa.filter(user => user !== 12)
-
-console.log(updateUser);
-
-
 //configure the server port
 app.listen(3000, () => {
     console.log('Server runs on port 3000')
